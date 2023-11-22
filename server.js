@@ -43,11 +43,13 @@ app.get('/info',(req,res)=>{
     res.send(userInfo)
 })
 
-app.post('/pg1',(req,res)=>{
+app.post('/infoPage',(req,res)=>{
     console.log(req.body)
     userInfo.push(req.body)
-    info.create({email:req.body.email,password:req.body.password})
-    .then(()=>res.redirect('/info'))    
+    const {email,password} = req.body;
+    const infoData = {email,password}
+    info.create(infoData)
+    .then(()=>res.redirect('/info'))
 })
 
 app.listen(3000,()=>{
