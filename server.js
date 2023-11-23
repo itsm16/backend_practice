@@ -53,10 +53,6 @@ app.get('/info',(req,res)=>{
     res.json({userInfo});
 })
 
-app.get('/k',(req,res)=>{
-    res.json('k')
-})
-
 app.listen(3000,()=>{
     console.log('Running on 3000')
 });
