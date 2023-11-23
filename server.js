@@ -40,9 +40,9 @@ app.get('/getInfo',(req,res)=>{
     res.render('getInfo')
 })
 
-app.post('/pg1',(req,res)=>{
+app.post('/infoPg',(req,res)=>{
     const {email,password} = req.body;
-    console.table(email,password)
+    console.table(req.body)
     userInfo.push(req.body)
     info.create({email,password})
     res.redirect('/info')
