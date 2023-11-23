@@ -8,13 +8,11 @@ app.set('view engine','ejs')
 app.use(morgan('common'))
 app.use(express.urlencoded({extended:true}))
 
-mongoose.connect('mongodb://127.0.0.1:27017',{
+mongoose.connect('mongodb://127.0.0.1:27017',({
     dbName:'Backend'
-}).then(()=>{
-    console.log('Db connected')
-}).catch((e)=>{
-    console.log(e)
-})
+}))
+.then(()=> console.log('Database Connected'))
+.catch((e) => console.log(e))
 
 const infoSchema = new mongoose.Schema({
     email:String,
