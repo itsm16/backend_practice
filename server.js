@@ -1,6 +1,6 @@
 import express from 'express'
-import mongoose from 'mongoose';
 import morgan from 'morgan'
+import mongoose from 'mongoose'
 
 const app = express();
 
@@ -8,19 +8,20 @@ app.set('view engine','ejs')
 app.use(morgan('common'))
 app.use(express.urlencoded({extended:true}))
 
-mongoose.connect('mongodb://127.0.0.1:27017',({
-    dbName:'backend'
-}))
-.then(()=> console.log('connected'))
-.catch((e) => console.log(e))
+mongoose.connect('mongodb://127.0.0.1:27017',{
+    dbName:'Backend'
+}).then(()=>{
+    console.log('Db connected')
+}).catch((e)=>{
+    console.log(e)
+})
 
 const infoSchema = new mongoose.Schema({
     email:String,
     password:String
-}
-)
+})
 
-const info = mongoose.model('info',infoSchema)
+const info = mongoose.model('info',infoSchema) // info is used as collection name , infos collection in database gets created
 
 const userInfo = [];
 
@@ -39,17 +40,21 @@ app.get('/getInfo',(req,res)=>{
     res.render('getInfo')
 })
 
-app.get('/info',(req,res)=>{
-    res.send(userInfo)
+app.post('/pg1',(req,res)=>{
+    const {email,password} = req.body;
+    console.table(email,password)
+    userInfo.push(req.body)
+    info.create({email,password})
+    res.redirect('/info')
+    
 })
 
-app.post('/infoPage',(req,res)=>{
-    console.log(req.body)
-    userInfo.push(req.body)
-    const {email,password} = req.body;
-    const infoData = {email,password}
-    info.create(infoData)
-    .then(()=>res.redirect('/info'))
+app.get('/info',(req,res)=>{
+    res.json({userInfo});
+})
+
+app.get('/k',(req,res)=>{
+    res.json('k')
 })
 
 app.listen(3000,()=>{
