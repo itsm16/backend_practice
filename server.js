@@ -27,13 +27,6 @@ app.get('/',(req,res)=>{
     res.send('hey')
 });
 
-app.get('/add',(req,res)=>{
-    info.create({email:'k',password:'k'})
-    .then(()=>{
-        res.send('Sent')
-    })
-})
-
 app.get('/getInfo',(req,res)=>{
     res.render('getInfo')
 })
@@ -47,9 +40,16 @@ app.post('/infoPg',(req,res)=>{
     
 })
 
-app.get('/info',(req,res)=>{
-    res.json({userInfo});
-})
+app.get('/info', (req, res) => {
+  info.find()
+    .then(entries => {
+      res.send(JSON.stringify(entries));
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).send('Internal Server Error');
+    });
+});
 
 app.listen(3000,()=>{
     console.log('Running on 3000')
