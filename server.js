@@ -51,6 +51,14 @@ app.get('/info', (req, res) => {
     });
 });
 
+app.get('/login',(req,res)=>{
+    res.render('login')
+})
+
+app.post('/login',(req,res)=>{
+    
+})
+
 app.listen(3000,()=>{
     console.log('Running on 3000')
 });
