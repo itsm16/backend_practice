@@ -52,11 +52,31 @@ app.get('/info', (req, res) => {
 });
 
 app.get('/login',(req,res)=>{
-    res.render('login')
+    const {token} = req.cookies;
+    console.log(req.cookies)
+    if (token) {
+        res.render('logout')
+    } else {
+        res.render('login');
+    }
+    
+})
+
+app.get('/logout',(req,res)=>{
+    res.cookie('token',null,{
+        httpOnly:true,
+        expires: new Date(Date.now())
+    })
+    
+    res.redirect('/login');
 })
 
 app.post('/login',(req,res)=>{
-    
+    res.cookie('token','iamIn',{
+        httpOnly:true,
+        expires: new Date(Date.now()+60*1000)
+    });
+    res.redirect('/login');
 })
 
 app.listen(3000,()=>{
