@@ -1,12 +1,14 @@
 import express from 'express'
 import morgan from 'morgan'
 import mongoose from 'mongoose'
+import cookieParser from 'cookie-parser'
 
 const app = express();
 
 app.set('view engine','ejs')
 app.use(morgan('common'))
 app.use(express.urlencoded({extended:true}))
+app.use(cookieParser())
 
 mongoose.connect('mongodb://127.0.0.1:27017',({
     dbName:'Backend'
