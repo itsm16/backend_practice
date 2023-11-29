@@ -12,7 +12,8 @@ const infoSchema = new mongoose.Schema({
         required:true
     },
     password:String
-});
+       
+},{timestamps:true});
 
 
 //export const info = mongoose.model('info',infoSchema); // info is used as collection name , infos collection in database gets created
