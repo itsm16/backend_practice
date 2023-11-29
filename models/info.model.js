@@ -16,6 +16,9 @@ const infoSchema = new mongoose.Schema({
     //     type:mongoose.Schema.Types.ObjectId,    //this is a method used to take reference from another schema
     //     ref:'model_name'    // ref should be used to get reference , name of schema to take reference is added here
     // }
+    // field_name:{
+    //     type:[]    // sometimes types are an array but js using array doesn't solve it ...such as an array for orderItems , defining quantity etc. ↓↓↓
+    // }               // In such cases ANOTHER SCHEMA for the items inside array is created/used
        
 },{timestamps:true}); //timestamps - gives createdAt , updatedAt
 
