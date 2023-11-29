@@ -1,10 +1,12 @@
 import express from 'express'
 import morgan from 'morgan'
-import mongoose from 'mongoose'
+import dotenv from 'dotenv'
+dotenv.config();
 import cookieParser from 'cookie-parser';
 import info from './models/info.models.js'
 
 const app = express();
+const PORT = process.env.PORT;
 
 app.set('view engine','ejs');
 app.use(morgan('common'));
@@ -69,6 +71,6 @@ app.post('/login',(req,res)=>{
     res.redirect('/login');
 })
 
-app.listen(3000,()=>{
-    console.log('Running on 3000');
+app.listen(PORT,()=>{
+    console.log(`Running on ${PORT}`);
 });
