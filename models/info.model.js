@@ -11,7 +11,11 @@ const infoSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    password:String
+    password:String,
+    // field_name:{
+    //     type:mongoose.Schema.Types.ObjectId,    //this is a method used to take reference from another schema
+    //     ref:'model_name'    // ref should be used to get reference , name of schema to take reference is added here
+    // }
        
 },{timestamps:true}); //timestamps - gives createdAt , updatedAt
 
