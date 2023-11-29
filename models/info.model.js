@@ -13,7 +13,7 @@ const infoSchema = new mongoose.Schema({
     },
     password:String
        
-},{timestamps:true});
+},{timestamps:true}); //timestamps - gives createdAt , updatedAt
 
 
 //export const info = mongoose.model('info',infoSchema); // info is used as collection name , infos collection in database gets created
