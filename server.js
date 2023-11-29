@@ -1,48 +1,34 @@
 import express from 'express'
 import morgan from 'morgan'
 import mongoose from 'mongoose'
-import cookieParser from 'cookie-parser'
+import cookieParser from 'cookie-parser';
+import info from './models/info.models.js'
 
 const app = express();
 
-app.set('view engine','ejs')
-app.use(morgan('common'))
-app.use(express.json())
-app.use(express.urlencoded({extended:true}))
-app.use(cookieParser())
-//app.use(express.static('public')) // for css
-
-mongoose.connect('mongodb://127.0.0.1:27017',({
-    dbName:'Backend'
-}))
-.then(()=> console.log('Database Connected'))
-.catch((e) => console.log(e))
-
-const infoSchema = new mongoose.Schema({
-    email:String,
-    password:String
-})
-
-const info = mongoose.model('info',infoSchema) // info is used as collection name , infos collection in database gets created
+app.set('view engine','ejs');
+app.use(morgan('common'));
+app.use(express.urlencoded({extended:true}));
+app.use(cookieParser());
 
 const userInfo = [];
 
 app.get('/',(req,res)=>{
-    res.send('hey')
+    res.send('hey');
 });
 
 app.get('/getInfo',(req,res)=>{
-    res.render('getInfo')
+    res.render('getInfo');
 })
 
 app.post('/infoPg',(req,res)=>{
     const {email,password} = req.body;
-    console.table(req.body)
-    userInfo.push(req.body)
-    info.create({email,password})
-    res.redirect('/info')
+    console.table(req.body);
+    userInfo.push(req.body);
+    info.create({email,password});
+    res.redirect('/info');
     
-})
+});
 
 app.get('/info', (req, res) => {
   info.find()
@@ -84,5 +70,5 @@ app.post('/login',(req,res)=>{
 })
 
 app.listen(3000,()=>{
-    console.log('Running on 3000')
+    console.log('Running on 3000');
 });
