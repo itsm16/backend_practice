@@ -13,7 +13,7 @@ app.use(morgan('common'));
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 
-// custom middleware
+// custom middlewares 
 app.use((req,res,next)=>{
     console.log("Request method: ",req.method);
     next();
