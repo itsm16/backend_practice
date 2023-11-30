@@ -1,5 +1,5 @@
 import express from 'express'
-import morgan from 'morgan'
+import morgan, { token } from 'morgan'
 import dotenv from 'dotenv'
 dotenv.config();
 import cookieParser from 'cookie-parser';
@@ -12,6 +12,22 @@ app.set('view engine','ejs');
 app.use(morgan('common'));
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
+
+// custom middleware
+app.use((req,res,next)=>{
+    console.log("Request method: ",req.method);
+    next();
+});
+
+const isAuth = (req,res,next) => {
+    const {token} = req.cookies;
+    if (token) {
+        next();
+    } else {
+        res.render('login');
+    }
+}
+
 
 const userInfo = [];
 
@@ -43,15 +59,8 @@ app.get('/info', (req, res) => {
     });
 });
 
-app.get('/login',(req,res)=>{
-    const {token} = req.cookies;
-    console.log(req.cookies)
-    if (token) {
-        res.render('logout')
-    } else {
-        res.render('login');
-    }
-    
+app.get('/login',isAuth,(req,res)=>{
+    res.render('logout')
 })
 
 app.get('/logout',(req,res)=>{
@@ -66,7 +75,7 @@ app.get('/logout',(req,res)=>{
 app.post('/login',(req,res)=>{
     res.cookie('token','iamIn',{
         httpOnly:true,
-        expires: new Date(Date.now()+60*1000)
+        expires: new Date(Date.now()+30*1000)
     });
     res.redirect('/login');
 })
