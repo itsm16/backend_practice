@@ -9,6 +9,7 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.set('view engine','ejs');
+//app.use(express.static(path.join(__dirname, 'public')));  // import path , Serve html/static files from the 'public' directory 
 //app.use(express.static("public")); //CSS
 app.use(morgan('common'));
 app.use(express.urlencoded({extended:true}));
