@@ -9,6 +9,7 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.set('view engine','ejs');
+//app.use(express.static("public")); //CSS
 app.use(morgan('common'));
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
