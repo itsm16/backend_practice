@@ -4,20 +4,24 @@ import dotenv from 'dotenv'
 dotenv.config();
 import cookieParser from 'cookie-parser';
 import info from './models/info.models.js'
+import connectDb from './db/db.js'
+
+// Database
+connectDb();
 
 const app = express();
 const PORT = process.env.PORT;
 
 app.set('view engine','ejs');
-//app.use(express.static(path.join(__dirname, 'public')));  // import path , Serve html/static files from the 'public' directory 
-//app.use(express.static("public")); //CSS
-app.use(morgan('common'));
+app.use(morgan('dev'));
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 
 // custom middlewares 
 app.use((req,res,next)=>{
+    console.log("Request URL: ",req.url);
     console.log("Request method: ",req.method);
+    console.log("Request time: ",new Date(Date.now()).toISOString());
     next();
 });
 
