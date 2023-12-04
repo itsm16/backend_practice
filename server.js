@@ -66,7 +66,7 @@ app.get('/info', (req, res) => {
 });
 
 app.get('/login',isAuth,(req,res)=>{
-    res.render('logout')
+    res.render('secret')    //action="/logout" action attribute in secret.ejs form is set to /logout
 })
 
 app.get('/logout',(req,res)=>{
