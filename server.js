@@ -5,6 +5,7 @@ dotenv.config();
 import cookieParser from 'cookie-parser';
 import info from './models/info.models.js'
 import connectDb from './db/db.js'
+import jwt from 'jsonwebtoken'
 
 // Database
 connectDb();
@@ -34,12 +35,58 @@ const isAuth = (req,res,next) => {
     }
 }
 
+const isAuthenticated = async (req,res,next)=>{
+    const {authToken} = req.cookies;
+    if (authToken) {
+        const decoded = jwt.verify(authToken,"oneTwo");
+        req.user = await info.findById(decoded)
+        next();
+    } else {
+        res.render('authLogin')
+    }
+}
 
 const userInfo = [];
 
 app.get('/',(req,res)=>{
     res.send('hey');
 });
+
+app.get('/authLogin',isAuthenticated,(req,res)=>{
+    console.log(req.user) //created in isAuthenticated
+    res.render('authSecret',{email : req.user.email})
+})
+
+app.post('/authLogin',async (req,res)=>{
+    const {email,password} = req.body;
+    console.table(req.body);
+    //const user = await info.create({email,password});
+    // const user = await info.findOne({email,password})
+
+    // if (user==req.user.) {
+        
+    // } else {
+        
+    // }
+
+    const token = jwt.sign({_id : user._id},"oneTwo") //sign method takes a secret
+    //user's id(written as user._id) is provided with secret to sign method
+    //token is passed as value in res.cookie method
+    console.log(token);
+    res.cookie('authToken',token,{   
+        httpOnly:true,
+        expires: new Date(Date.now()+30*1000)
+    })
+    res.redirect('/authLogin')
+})
+
+app.get('/authout',(req,res)=>{
+    res.cookie('authToken',null,{
+        httpOnly:true,
+        expires: new Date(Date.now())
+    })
+    res.redirect('/authLogin')
+})
 
 app.get('/getInfo',(req,res)=>{
     res.render('getInfo');
