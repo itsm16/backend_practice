@@ -3,7 +3,7 @@ import morgan, { token } from 'morgan'
 import dotenv from 'dotenv'
 dotenv.config();
 import cookieParser from 'cookie-parser';
-import info from './models/info.models.js'
+import info from './models/info.model.js'
 import connectDb from './db/db.js'
 import jwt from 'jsonwebtoken'
 
