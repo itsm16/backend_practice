@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import info from './models/info.model.js'
 import connectDb from './db/db.js'
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 
 // Database
 connectDb();
@@ -39,7 +40,7 @@ const isAuthenticated = async (req,res,next)=>{
     const {authToken} = req.cookies;
     if (authToken) {
         const decoded = jwt.verify(authToken,"oneTwo");
-        req.user = await info.findById(decoded)
+        req.user = await info.findById(decoded._id)
         next();
     } else {
         res.render('authLogin')
@@ -52,6 +53,27 @@ app.get('/',(req,res)=>{
     res.send('hey');
 });
 
+
+// Register User
+
+app.get("/register",(req,res)=>{
+    res.render("register")
+})
+
+app.post("/register",async (req,res)=>{
+    const {email,password} = req.body;
+    const hashedPassword = await bcrypt.hash(password,10)
+    const existingUser = await info.findOne({ email });
+
+    if (existingUser) {
+        return res.redirect("/authLogin");
+    } else {
+        await info.create({email,password : hashedPassword})
+        res.redirect("/info")
+    }
+    
+})
+
 app.get('/authLogin',isAuthenticated,(req,res)=>{
     console.log(req.user) //created in isAuthenticated
     res.render('authSecret',{email : req.user.email})
@@ -61,23 +83,23 @@ app.post('/authLogin',async (req,res)=>{
     const {email,password} = req.body;
     console.table(req.body);
     //const user = await info.create({email,password});
-    // const user = await info.findOne({email,password})
+    const user = await info.findOne({email,password})
 
-    // if (user==req.user.) {
-        
-    // } else {
-        
-    // }
+     if (user==req.user) {
+        const token = jwt.sign({_id : user._id},"oneTwo")
+        res.cookie('authToken',token,{   
+            httpOnly:true,
+            expires: new Date(Date.now()+30*1000)
+        })
+        res.redirect('/authLogin')
+     } else {
+        res.redirect("/register")
+     }
 
-    const token = jwt.sign({_id : user._id},"oneTwo") //sign method takes a secret
+    //sign method takes a secret
     //user's id(written as user._id) is provided with secret to sign method
     //token is passed as value in res.cookie method
     console.log(token);
-    res.cookie('authToken',token,{   
-        httpOnly:true,
-        expires: new Date(Date.now()+30*1000)
-    })
-    res.redirect('/authLogin')
 })
 
 app.get('/authout',(req,res)=>{
