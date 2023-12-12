@@ -1,4 +1,4 @@
-import express, { Router } from 'express'
+import express from 'express'
 import morgan from 'morgan'
 import dotenv from 'dotenv'
 dotenv.config();
