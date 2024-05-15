@@ -11,10 +11,10 @@ const infoSchema = new mongoose.Schema({
 
 
 //export const info = mongoose.model('info',infoSchema); // info is used as collection name , infos collection in database gets created
-// since export is used above ,to import info in server.js....it should be inside braces - {info}
+// if default export is not used ,to import info in server.js....it should be inside braces - {info}
 
 
-// to use default it can written as ----
-//the export below doesn't require {} while importing
+// to use default export , it can written as below ----
+//the default export below doesn't require {} while importing
 const info = mongoose.model('info',infoSchema);
 export default info;
